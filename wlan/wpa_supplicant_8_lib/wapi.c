@@ -241,14 +241,11 @@ int wapi_set_suites(struct wpa_supplicant* wpa_s, struct wpa_ssid* ssid, struct 
         }
         wapi_param.kv[wapi_param.kl] = '\0';
     } else if (wpa_s->key_mgmt == WPA_KEY_MGMT_WAPI_CERT) {
-        if (!ssid->wapi_cert_alias || !os_strcmp((char*)ssid->wapi_cert_alias, "NULL"))
-            wapi_param.cert_list = NULL;
-        else
-            wapi_param.cert_list = (char*)ssid->wapi_cert_alias;
-        wapi_param.authType = AUTH_TYPE_WAPI_CERT;
-        wpa_printf(MSG_INFO, "[WAPI] Using Key mgmt WAPI Cert");
+        wpa_printf(MSG_ERROR,
+                   "[WAPI] WPA_KEY_MGMT_WAPI_CERT is not");
+        return -1;
     }
-
+    
     wapi_set_param_result = wapi_context->ops.wapi_set_user(&wapi_param);
     if (wapi_set_param_result < 0) {
         wpa_printf(MSG_WARNING, "[WAPI] wapi_set_user result %d", wapi_set_param_result);
